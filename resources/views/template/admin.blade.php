@@ -14,7 +14,6 @@
 <div class="container-fluid">
   <div class="row">
     <x-sidebar/>
-    
     <div class="col">
       @yield('content')
     </div>
