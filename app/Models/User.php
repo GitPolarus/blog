@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'photo',
+        'birth_date',
+        'activate',
+        'role',
     ];
 
     /**
@@ -41,4 +45,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    /**
+     * articles : recupère les articles d'un user
+     *
+     * @return Array
+     */
+    public function articles(){
+        return $this->hasMany(Article::class);
+    }
 }
