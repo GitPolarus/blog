@@ -13,11 +13,20 @@
             <a class="nav-link" href="#">Articles</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Dashbord</a>
+            <a class="nav-link" href="/admin">Dashbord</a>
           </li>
+          @auth
           <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
+            <a class="nav-link btn btn-danger" href="/logout">Logout</a>
           </li>
+          @endauth
+          
+          @guest
+              <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+          @endguest
+        
         </ul>
       </div>
     </div>

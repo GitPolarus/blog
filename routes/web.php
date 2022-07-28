@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\ArticleController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,10 +19,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin', function () {
-    return view('admin.home');
-});
 
-Route::prefix('admin')->group(function(){
-    Route::resource("articles", ArticleController::class);
+Route::get('/login', [AuthController::class, "index"]);
+
+Route::post('/login', [AuthController::class, "login"])->name("login");
+Route::middleware('auth')->group(function(){
+    Route::get('/admin', function () {
+        return view('admin.home');
+    });
+    
+    Route::prefix('admin')->group(function(){
+    Route::resource("articles", ArticleController::class)->names([
+        'create'=>'articles.create',
+        'index'=>'articles.list',
+    ]);
+    });
+    
+    Route::get('/logout', [AuthController::class, "logout"]);
 });
