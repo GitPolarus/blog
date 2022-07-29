@@ -15,6 +15,67 @@
       </div>
     </div>
 
+    @if (session('error'))
+      <div class="alert alert-danger">
+        {{session('error')}}
+      </div>
+    @endif
 
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Add new Article</h4>
+      </div>
+      <div class="card-body">
+        <form action="{{route('articles.store')}}" method="post" enctype="multipart/form-data">
+          @csrf
+          <div class="row my-2">
+            <div class="col">
+              <div class="form-group">
+                <input type="text" class="form-control  @error('title')is-invalid @enderror" name="title" placeholder="Post Title" value="{{old('title')}}" >
+                @error('title')
+                <div class="alert alert-danger">
+                 {{$message}}
+                </div>
+             @enderror
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col">
+              <div class="form-group ">
+                <textarea name="description" class="form-control" placeholder="Description of the post" cols="30" rows="10">{{old('description')}}</textarea>
+              </div>
+              @error('description')
+              <div class="alert alert-danger">
+               {{$message}}
+              </div>
+              @enderror
+            </div>
+          </div>
+
+          <div class="row my-2">
+            <div class="col">
+              <div class="form-group">
+                <input type="file" class="form-control" name="photo" id="title" placeholder="Post image" value="{{old('photo')}}" >
+                @error('photo')
+                <div class="alert alert-danger">
+                 {{$message}}
+                </div>
+                @enderror
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="published"  role="switch" id="published">
+                <label class="form-check-label" for="published">Published</label>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-md btn-primary"> <i class="bi bi-plus-circle"></i> Save</button>
+        </form>
+    
+      </div>
+    </div>
 </main>
 @endsection

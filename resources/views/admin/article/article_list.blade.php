@@ -17,5 +17,48 @@
         </a>
       </div>
     </div>
+    @if (session('status'))
+      <div class="alert alert-success">
+        {{session('status')}}
+      </div>
+    @endif
+    <div class="card ">
+      <div class="card-header"> <h2>List of Articles</h2></div>
+      <div class="card-body">
+       
+        <div class="table-responsive table-bordered">
+          <table class="table  table-sm">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Author</th>
+                <th scope="col">Publish Date</th>
+                <th scope="col">Published</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+            @foreach ($articles as $article)
+            <tr>
+              <td>{{$article->id}}</td>
+              <td>{{$article->title}}</td>
+              <td>{{ Str::limit($article->description,'30') }}</td>
+              <td>{{$article->author_id}}</td>
+              <td>{{$article->publication_date}}</td>
+              <td>{{$article->published}}</td>
+              <td>
+                <button class="btn btn-success btn-sm" title="Edit"> <i class="bi bi-pencil"></i></button>
+                <button class="btn btn-danger btn-sm" title="Delete"> <i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+            @endforeach
+             
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 </main>
 @endsection

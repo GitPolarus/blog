@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -37,7 +38,28 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title'=>'required|string|max:50',
+            'description'=>'required',
+            'photo'=>'mimes:jpg,svg,png|max:10240'
+        ]);
+
+        $article = $data;
+        $article['published'] = $request['published']?true:false;
+        $article['author_id'] = Auth::user()->id;
+        if ($article['published']) {
+            $article['publication_date'] = now();
+        }
+    // dd($article);
+        $newArticle = Article::create($article);
+        if ($newArticle) {
+           return  redirect()->route('articles.list')->with(["status"=>"Article Added successfully"]);
+        }else{
+            return back()->with("error","Failed to create the Article")->withInput();
+        }
+
+
+        
     }
 
     /**
