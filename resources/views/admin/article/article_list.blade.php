@@ -36,6 +36,7 @@
                 <th scope="col">Author</th>
                 <th scope="col">Publish Date</th>
                 <th scope="col">Published</th>
+                <th scope="col">Photo</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -48,6 +49,18 @@
               <td>{{$article->author_id}}</td>
               <td>{{$article->publication_date}}</td>
               <td>{{$article->published}}</td>
+              <td>
+                @if ($article->photo)
+                  @if (Str::contains($article->photo, 'https://'))
+                      <img src="{{$article->photo}}" alt="{{$article->title}}" width="100px">
+                      @else
+                      <img src="{{asset('storage/'.$article->photo)}}" alt="{{$article->title}}" width="100px">
+                  @endif
+                  @else
+                  <img src="{{asset('storage/images/article-default.jpg')}}" alt="{{$article->title}}" width="100px">
+
+                @endif
+              </td>
               <td>
                 <button class="btn btn-success btn-sm" title="Edit"> <i class="bi bi-pencil"></i></button>
                 <button class="btn btn-danger btn-sm" title="Delete"> <i class="bi bi-trash"></i></button>

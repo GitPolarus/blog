@@ -41,10 +41,18 @@ class ArticleController extends Controller
         $data = $request->validate([
             'title'=>'required|string|max:50',
             'description'=>'required',
-            'photo'=>'mimes:jpg,svg,png|max:10240'
+            'photo'=>'file|mimes:jpg,svg,png|max:10240'
         ]);
-
+        
         $article = $data;
+
+        if ($request->file("photo")) {
+            $file  = $request->file("photo");
+            $fileName = 'article-'.time().'.'.$file->getClientOriginalExtension();
+            $path = $file->storeAs('images',$fileName,'public');
+            $article['photo']= $path;
+        }
+
         $article['published'] = $request['published']?true:false;
         $article['author_id'] = Auth::user()->id;
         if ($article['published']) {
