@@ -62,9 +62,17 @@
                 @endif
               </td>
               <td>
-                <button class="btn btn-success btn-sm" title="Edit"> <i class="bi bi-pencil"></i></button>
-                <button class="btn btn-danger btn-sm" title="Delete"> <i class="bi bi-trash"></i></button>
-              </td>
+                <a href="{{route('articles.edit',['article'=>$article->id])}}" class="btn btn-success btn-sm" title="Edit"> <i class="bi bi-pencil"></i></a>
+               
+                <button onclick="if(confirm('Are you sure to delete???')){
+                  document.getElementById('form-{{$article->id}}').submit();
+                  }" class="btn btn-danger btn-sm" title="Delete"> <i class="bi bi-trash"></i></button>
+               
+               <form id="form-{{$article->id}}" action="{{route("articles.destroy",['article'=>$article->id])}}" method="post">
+                @csrf
+                @method('delete')
+              </form>  
+            </td>
             </tr>
             @endforeach
              

@@ -79,6 +79,7 @@ class ArticleController extends Controller
     public function show($id)
     {
         //
+        return "just to show";
     }
 
     /**
@@ -89,7 +90,8 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $article = Article::find($id);
+        return view("admin.article.article_edit",['article'=>$article]);
     }
 
     /**
@@ -101,7 +103,9 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      
+
+
     }
 
     /**
@@ -113,5 +117,11 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         //
+        $article = Article::find($id);
+        if ($article->delete()) {
+            return back()->with("status","Article $article->title deleted successfully");
+        }else{
+            return back()->with("status","Failed to delete Article $article->title");
+        }
     }
 }
