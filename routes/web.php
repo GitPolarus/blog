@@ -33,7 +33,10 @@ Route::middleware('auth')->group(function(){
         'create'=>'articles.create',
         'index'=>'articles.list',
     ]);
-    });
+    Route::put("articles/{id}/publish", [ArticleController::class, "publish"])->name('articles.publish');
+    Route::put("articles/search/{query}", [ArticleController::class, "search"])->name('articles.search');
+   
+});
     
     Route::get('/logout', [AuthController::class, "logout"]);
 });

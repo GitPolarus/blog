@@ -26,10 +26,10 @@
         <h4 class="card-title">Edit Article {{$article->title}}</h4>
       </div>
       <div class="card-body">
-        <form action="{{route('articles.update',['article',$article->id])}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('articles.update',['article'=>$article->id])}}" method="post" enctype="multipart/form-data">
           @csrf
           @method('put')
-          <input type="hidden" value="{{$article->id}}">
+          {{-- <input type="hidden" value="{{$article->id}}"> --}}
           <div class="row my-2">
             <div class="col">
               <div class="form-group">
@@ -69,12 +69,14 @@
             </div>
             <div class="col">
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" name="published"  role="switch" id="published">
+                <input class="form-check-input" type="checkbox" @if ($article->published)
+                checked
+              @endif name="published"  role="switch" id="published">
                 <label class="form-check-label" for="published">Published</label>
               </div>
             </div>
           </div>
-          <button class="btn btn-md btn-primary"> <i class="bi bi-plus-circle"></i> Save</button>
+          <button class="btn btn-md btn-info"> <i class="bi bi-pencil"></i> Update</button>
         </form>
     
       </div>

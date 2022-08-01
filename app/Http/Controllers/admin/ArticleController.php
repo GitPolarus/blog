@@ -16,8 +16,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::all();
-        return view("admin.article.article_list",['articles'=>$articles]);
+        $list_of_articles = Article::orderBy('updated_at','desc')->paginate(5);
+        return view("admin.article.article_list",['arts'=>$list_of_articles]);
     }
 
     /**
@@ -58,7 +58,7 @@ class ArticleController extends Controller
         if ($article['published']) {
             $article['publication_date'] = now();
         }
-    // dd($article);
+        
         $newArticle = Article::create($article);
         if ($newArticle) {
            return  redirect()->route('articles.list')->with(["status"=>"Article Added successfully"]);
@@ -79,7 +79,8 @@ class ArticleController extends Controller
     public function show($id)
     {
         //
-        return "just to show";
+        $article = Article::find($id);
+        return view("admin.article.article_show", ["article"=>$article]);
     }
 
     /**
@@ -103,9 +104,36 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $data = $request->validate([
+            'title'=>'required|string|max:50',
+            'description'=>'required',
+            'photo'=>'file|mimes:jpg,svg,png|max:10240'
+        ]);
+
+        $article = Article::find($id);
+
+        
+        if ($request->file("photo")) {
+            $file  = $request->file("photo");
+            $fileName = 'article-'.time().'.'.$file->getClientOriginalExtension();
+            $path = $file->storeAs('images',$fileName,'public');
+            $article->photo = $path;
+        }
+        // dd($id);
+        
+        $article->title = $data['title'];
+        $article->description = $data['description'];
+        $article->published = $request['published']?true:false;
+        $article->author_id = Auth::user()->id;
+        $article->publication_date = $article->published? now():null;
+        
+        // dd($article);
+        if($article->update()){
+            return  redirect()->route('articles.list')->with(["status"=>"Article Edited successfully"]);
+        }else{
+            return back()->with("error","Failed to edit the Article")->withInput();
+        }
       
-
-
     }
 
     /**
@@ -123,5 +151,33 @@ class ArticleController extends Controller
         }else{
             return back()->with("status","Failed to delete Article $article->title");
         }
+    }
+
+
+    public function publish(Request $request, $id){
+        $article = Article::find($id);
+
+        $article->published = !$article->published ;
+        $message = "";
+        if ($article['published']) {
+            $article['publication_date'] = now();
+            $message = "Article published successfully";
+        }else{
+            $article['publication_date'] = null;
+            $message = "Article unpublished successfully";
+
+        }
+        
+        if($article->update()){
+            return  redirect()->route('articles.list')->with(["status"=>$message]);
+        }else{
+            return back()->with("error","Failed to edit the Article")->withInput();
+        }
+    }
+
+    public function search(){
+        $query = Request()->input('query');
+        $articles = Article::where('title','like',"% $query %")->paginate(5);
+        return view("admin.article.article_list", ['arts'=>$articles]);
     }
 }

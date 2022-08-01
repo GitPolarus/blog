@@ -23,7 +23,24 @@
       </div>
     @endif
     <div class="card ">
-      <div class="card-header"> <h2>List of Articles</h2></div>
+     
+      <div class="card-header">
+        <div class="row">
+          <div class="col-8">
+        <h2>List of Articles </h2> 
+
+        </div>
+        <div class="col-4">
+          <form method="get" >
+            <div class="input-group mb-3">
+            <input type="search" class="form-control" placeholder="" name="query" aria-label="Example text with button addon" aria-describedby="button-addon1">
+            <button class="btn btn-info" type="submit" id="button-addon1">Search</button>
+          </div>
+        </form>
+        </div>
+        </div>
+       
+      </div>
       <div class="card-body">
        
         <div class="table-responsive table-bordered">
@@ -41,14 +58,27 @@
               </tr>
             </thead>
             <tbody>
-            @foreach ($articles as $article)
+            @foreach ($arts as $article)
             <tr>
               <td>{{$article->id}}</td>
               <td>{{$article->title}}</td>
               <td>{{ Str::limit($article->description,'30') }}</td>
               <td>{{$article->author_id}}</td>
               <td>{{$article->publication_date}}</td>
-              <td>{{$article->published}}</td>
+              <td>
+                
+                <div class="form-check form-switch">
+                  <input class="form-check-input" onchange="if(confirm('Are you sure change the state of this article???')){
+                    document.getElementById('publish-{{$article->id}}').submit();
+                    }" type="checkbox" @if ($article->published)
+                      checked
+                    @endif name="published"  role="switch" id="published">
+                </div>
+                <form id="publish-{{$article->id}}" action="{{route("articles.publish",['id'=>$article->id])}}" method="post">
+                  @csrf
+                  @method('put')
+                </form>  
+              </td>
               <td>
                 @if ($article->photo)
                   @if (Str::contains($article->photo, 'https://'))
@@ -62,6 +92,7 @@
                 @endif
               </td>
               <td>
+                <a href="{{ route('articles.show', ['article'=>$article->id]) }}" title="Read more" class="btn btn-info btn-sm"><i class="bi bi-eyeglasses"></i></a>
                 <a href="{{route('articles.edit',['article'=>$article->id])}}" class="btn btn-success btn-sm" title="Edit"> <i class="bi bi-pencil"></i></a>
                
                 <button onclick="if(confirm('Are you sure to delete???')){
@@ -78,7 +109,11 @@
              
             </tbody>
           </table>
+         
         </div>
+      </div>
+      <div class="card-footer">
+        {{$arts->links()}}
       </div>
     </div>
 </main>
