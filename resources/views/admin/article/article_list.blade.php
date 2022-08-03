@@ -31,9 +31,9 @@
 
         </div>
         <div class="col-4">
-          <form method="get" >
+          <form method="get" action="{{ route('articles.search') }}">
             <div class="input-group mb-3">
-            <input type="search" class="form-control" placeholder="" name="query" aria-label="Example text with button addon" aria-describedby="button-addon1">
+            <input type="search" class="form-control" placeholder="" name="query" >
             <button class="btn btn-info" type="submit" id="button-addon1">Search</button>
           </div>
         </form>
@@ -63,10 +63,9 @@
               <td>{{$article->id}}</td>
               <td>{{$article->title}}</td>
               <td>{{ Str::limit($article->description,'30') }}</td>
-              <td>{{$article->author_id}}</td>
+              <td>{{$article->author->name}}</td>
               <td>{{$article->publication_date}}</td>
               <td>
-                
                 <div class="form-check form-switch">
                   <input class="form-check-input" onchange="if(confirm('Are you sure change the state of this article???')){
                     document.getElementById('publish-{{$article->id}}').submit();

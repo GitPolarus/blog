@@ -119,7 +119,7 @@ class ArticleController extends Controller
             $path = $file->storeAs('images',$fileName,'public');
             $article->photo = $path;
         }
-        // dd($id);
+       
         
         $article->title = $data['title'];
         $article->description = $data['description'];
@@ -175,9 +175,11 @@ class ArticleController extends Controller
         }
     }
 
-    public function search(){
-        $query = Request()->input('query');
-        $articles = Article::where('title','like',"% $query %")->paginate(5);
-        return view("admin.article.article_list", ['arts'=>$articles]);
+    public function search(Request $request){
+        $query = $request->input('query');
+        dd($query);
+        // $articles = Article::query()->where('title','like',"% $query %")->paginate(5);
+        
+        // return view("admin.article.article_list", ['arts'=>$articles]);
     }
 }
