@@ -31,9 +31,10 @@
 
         </div>
         <div class="col-4">
-          <form method="get" action="{{ route('articles.search') }}">
-            <div class="input-group mb-3">
-            <input type="search" class="form-control" placeholder="" name="query" >
+          <form method="post" action="{{ route('articles.search') }}">
+            @csrf
+          <div class="input-group mb-3">
+            <input type="search" class="form-control" placeholder="" name="q" >
             <button class="btn btn-info" type="submit" id="button-addon1">Search</button>
           </div>
         </form>

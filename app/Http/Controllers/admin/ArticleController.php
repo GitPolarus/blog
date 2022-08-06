@@ -176,10 +176,10 @@ class ArticleController extends Controller
     }
 
     public function search(Request $request){
-        $query = $request->input('query');
-        dd($query);
-        // $articles = Article::query()->where('title','like',"% $query %")->paginate(5);
+        $query = $request['q'];
+        // dd($query);
+        $articles = Article::where('title','like',"%$query%")->paginate(5);
         
-        // return view("admin.article.article_list", ['arts'=>$articles]);
+        return view("admin.article.article_list", ['arts'=>$articles]);
     }
 }

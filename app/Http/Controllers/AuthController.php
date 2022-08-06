@@ -29,6 +29,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             return redirect('/admin');
         }
+        
         return back()->withErrors([
             'email'=>"The provided credentials do not match our records."
         ])->onlyInput('email');
