@@ -21,10 +21,10 @@ Route::get('/', function () {
 });
 
 
-Route::get('/login', [AuthController::class, "index"]);
+Route::get('/login', [AuthController::class, "index"])->name('login.display');
 
 Route::post('/login', [AuthController::class, "login"])->name("login");
-Route::middleware('auth')->group(function(){
+Route::middleware(['auth','admin'])->group(function(){
     
     /* 
     Start admin routes
@@ -65,5 +65,7 @@ Route::middleware('auth')->group(function(){
     /* 
     end admin routes
     */
-    Route::get('/logout', [AuthController::class, "logout"]);
+    
 });
+
+Route::get('/logout', [AuthController::class, "logout"]);

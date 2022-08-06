@@ -4,15 +4,11 @@
 @section("content")
 <div class="container">
     
-   {{--  @if ($errors->any())
+    @if(session('error'))
     <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+                {{ session('error') }}
     </div>
-    @endif --}}
+    @endif
     <div class="card mx-auto" style="width: 25rem;">
         <div class="card-body">
             <form action="{{route('login')}}" method="POST">
